@@ -12,10 +12,9 @@ import org.springframework.stereotype.Service;
 public class InterestService {
 
     @Autowired
-    InterestCalculationStrategyFactory interestCalculationStrategyFactory;
-
-    @Autowired
     private InterestRepository interestRepository;
+
+    InterestCalculationStrategyFactory interestCalculationStrategyFactory = new InterestCalculationStrategyFactory(interestRepository);
 
     public String displayService(AccountTypes type, double balance) {
         InterestCalculationStrategy strategy = interestCalculationStrategyFactory.getInterestCalculationStrategy(type);
