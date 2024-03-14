@@ -5,6 +5,7 @@ import io.interest.model.Interest;
 import io.interest.repository.InterestRepository;
 import io.interest.strategy.InterestCalculationStrategy;
 import io.interest.strategy.InterestCalculationStrategyFactory;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,7 @@ public class InterestService {
     @Autowired
     private InterestRepository interestRepository;
 
-    InterestCalculationStrategyFactory interestCalculationStrategyFactory = new InterestCalculationStrategyFactory(interestRepository);
+    private InterestCalculationStrategyFactory interestCalculationStrategyFactory;
 
     public String displayService(AccountTypes type, double balance) {
         InterestCalculationStrategy strategy = interestCalculationStrategyFactory.getInterestCalculationStrategy(type);
@@ -37,5 +38,10 @@ public class InterestService {
                 "Account Type: " + type + "\n" +
                 "Rate: " + interest.getRate() + "\n";
 
+    }
+
+    @PostConstruct
+    private void  initializeFactory() {
+        this.interestCalculationStrategyFactory = new InterestCalculationStrategyFactory(interestRepository);
     }
 }
